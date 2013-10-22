@@ -21,3 +21,11 @@ Now you can run the tests with pyrg:
 
     pyrg -v python/test_roman_numerals.py
 
+#### Ruby
+
+Don't forget to bundle install upon cloning.
+To run:
+
+    rspec ruby/spec/roman_to_int_spec.rb
+
+
