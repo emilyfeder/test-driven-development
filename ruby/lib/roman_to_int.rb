@@ -95,6 +95,24 @@ INT_VALUE = { "I" => 1, "V" => 5, "X" => 10, "L" => 50, "C" => 100, "D" => 500,
   end
 
   def self.parse_file(input_fname, output_fname)
+    # Given a filename, translate roman numerals to their integer
+    # values and output a file where each line has the same integer
+    # value as the respective line of roman numerals in the input file.
+    inputf = File.open(input_fname, 'r')
+    outputf = File.open(output_fname, 'w')
+    
+    inputf.readlines.each do |line|
+      result_int = self.parse(line.strip())
+      if result_int > 0
+        outputf.puts(result_int.to_s)
+      else
+        outputf.puts('****')
+      end
+    end
+    
+    inputf.close()
+    outputf.close()
+
   end
 
 end

@@ -1,10 +1,21 @@
 require_relative '../lib/roman_to_int'
 
+DATA_DIR = File.dirname(File.absolute_path(__FILE__))
+TEST_PATH = File.join(DATA_DIR, 'test_file.txt')
+TEST_RESULTS_PATH = File.join(DATA_DIR, 'test_results.txt')
+EXPECTED_PATH = File.join(DATA_DIR, 'expected_results.txt')
 
+def actual_results
+  File.read(TEST_RESULTS_PATH).split("\n")
+end
+
+def expected_results
+  File.read(EXPECTED_PATH).split("\n")
+end
 
 describe RomanToInt do
   
-  describe "#parse" do
+  describe ".parse" do
 
     {
       'I' => 1,
@@ -82,7 +93,7 @@ describe RomanToInt do
     end
   end
 
-  describe "#whole_string_valid" do
+  describe ".whole_string_valid" do
     [
       'ABCD', # string should only contain valid characters
       'XXKV',
@@ -112,6 +123,7 @@ describe RomanToInt do
         RomanToInt.whole_string_valid(roman).should be_false
       end
     end
+
     
     [
       'XXXIX',
@@ -129,7 +141,7 @@ describe RomanToInt do
 
   end
 
-  describe "#int_value" do
+  describe ".int_value" do
     {
       'I' => 1,
       'XL' => 40,
@@ -161,8 +173,23 @@ describe RomanToInt do
 
 
 
-  describe "#parse_file" do
-     
+  describe ".parse_file" do
+
+    before :all do
+      if File.exists?(TEST_RESULTS_PATH)
+        File.delete(TEST_RESULTS_PATH)
+      end
+      RomanToInt.parse_file(TEST_PATH, TEST_RESULTS_PATH)
+    end
+
+    it "results file is expected size" do
+      actual_results.size.should == expected_results.size
+    end
+
+    it "parses every line as a roman numeral and outputs the integer or an error code" do
+      actual_results.should == expected_results
+    end
+    
   end
 
 end

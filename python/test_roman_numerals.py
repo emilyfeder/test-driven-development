@@ -7,7 +7,7 @@ import os
 import pdb
 import parse_roman_numerals as prn
 
-DATA_DIR = os.path.join(os.getenv('HOME'), 'Projects/test-driven-development/python')
+DATA_DIR = os.path.dirname(os.path.abspath(__file__))
 TEST_PATH = os.path.join(DATA_DIR, 'test_file.txt')
 TEST_RESULTS_PATH = os.path.join(DATA_DIR, 'test_results.txt')
 EXPECTED_PATH = os.path.join(DATA_DIR, 'expected_results.txt')
@@ -335,17 +335,20 @@ class TestFileReadingAndWriting(unittest.TestCase):
     def runTest(self):
         if os.path.exists(TEST_RESULTS_PATH):
             os.remove(TEST_RESULTS_PATH) 
-
         prn.parse_roman_numeral_file(TEST_PATH, TEST_RESULTS_PATH)
 
-        results = open(TEST_RESULTS_PATH, 'r')
-        expected_results = open(EXPECTED_PATH, 'r')
-        self.assertNotEqual(len(results.readlines()), 0)
-        for result, expected in zip(results.readlines(), expected_results.readlines()):
-            self.assertEqual(result, expected, "Test Result: %s != Expected Result %s" % (result, expected))
+        resultsf = open(TEST_RESULTS_PATH, 'r')
+        results = resultsf.readlines()
+        resultsf.close()
 
-        results.close()
-        expected_results.close()
+        expected_resultsf = open(EXPECTED_PATH, 'r')
+        expected_results = expected_resultsf.readlines()
+        expected_resultsf.close()
+
+        self.assertGreater(len(results), 0)
+        self.assertEqual(len(results), len(expected_results))
+        self.assertItemsEqual(results, expected_results) 
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=1)
