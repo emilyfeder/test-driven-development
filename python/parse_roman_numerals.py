@@ -74,7 +74,7 @@ def int_value(roman):
     a standalone way of getting the int value.
 
     Here we define a 'digit' in roman numerals. For example, two numerals
-    combined with subtractive such as 'IX' are taken to be one token."""
+    combined with subtractive such as 'IX' are taken to be one digit."""
 
     # the roman numeral string shifted ahead by one character
     shift_ahead = roman[1:] + "*"
