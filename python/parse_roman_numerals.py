@@ -59,7 +59,7 @@ def whole_string_valid(roman):
     if re.search('IX', roman) and not re.search('IX$', roman):
         return False
 
-    # Half step numerals L and D cannot be on the left side of subtractive notation.
+    # Half step numerals V, L, and D cannot be on the left side of subtractive notation.
     if re.search('VX|VL|VC|VD|VM|LC|LD|LM|DM', roman):
         return False
 
@@ -83,25 +83,23 @@ def int_value(roman):
     banned = []
     i = 0
     while i < len(roman):
-        currval = INT_VALUE[roman[i]]
-        nextval = INT_VALUE[shift_ahead[i]]
         if (roman[i] + shift_ahead[i]) in banned:
             return -1
-        # if not subtractive notation
-        if currval >= nextval or shift_ahead[i]=="*":
-            digit_total = currval
-        else:
+        # if subtractive notation
+        if re.search('IV|IX|XL|XC|CD|CM', roman[i] + shift_ahead[i]):
             # Take this and next character as one digit
-            digit_total = nextval - currval
+            digit_total = INT_VALUE[shift_ahead[i]] - INT_VALUE[roman[i]]
             # Since these characters have been used in subtractive notation, they now cannot
             # be used as a combination in the rest of the roman numeral string
             banned.append(roman[i] + shift_ahead[i])
             i += 1
+        else:
+            digit_total = INT_VALUE[roman[i]]
         if last_digit_total and digit_total > last_digit_total: # Digit values should decrease to the right
             return -1
         total += digit_total
         last_digit_total = digit_total
-        i+=1
+        i += 1
 
     return total
 

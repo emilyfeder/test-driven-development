@@ -7,7 +7,7 @@ import os
 import pdb
 import parse_roman_numerals as prn
 
-DATA_DIR = os.path.join(os.getenv('HOME'), 'Projects/test-driven-development')
+DATA_DIR = os.path.join(os.getenv('HOME'), 'Projects/test-driven-development/python')
 TEST_PATH = os.path.join(DATA_DIR, 'test_file.txt')
 TEST_RESULTS_PATH = os.path.join(DATA_DIR, 'test_results.txt')
 EXPECTED_PATH = os.path.join(DATA_DIR, 'expected_results.txt')
@@ -252,7 +252,7 @@ class TestWholeStringValid(unittest.TestCase):
     def test_invalid_DM(self):
         self.assertFalse(prn.whole_string_valid('DM'))
 
-    # Checks for no double half step numerals
+    # Checks for no more than one of each half step numeral
     def test_invalid_VV(self):
         self.assertFalse(prn.whole_string_valid('VV'))
 
@@ -261,6 +261,16 @@ class TestWholeStringValid(unittest.TestCase):
 
     def test_invalid_MMDD(self):
         self.assertFalse(prn.whole_string_valid('MMDD'))
+
+    def test_invalid_MDMD(self):
+        self.assertFalse(prn.whole_string_valid('MDMD'))
+
+    def test_invalid_LIXL(self):
+        self.assertFalse(prn.whole_string_valid('LIXL'))
+
+    # No 'IX' in the middle of the string
+    def test_invalid_CIXI(self):
+        self.assertFalse(prn.whole_string_valid('CIXI'))
 
     # Test that some valid strings pass
     def test_XXXIV(self):
@@ -304,10 +314,10 @@ class TestIntValue(unittest.TestCase):
     def test_CXIV(self):
         self.assertEqual(114, prn.int_value('CXIV'))
 
-    def test_CIXIX(self):
+    def test_invalid_CIXIX(self):
         self.assertEqual(-1, prn.int_value('CIXIX'))
 
-    def test_CIXL(self):
+    def test_invalid_CIXL(self):
         self.assertEqual(-1, prn.int_value('CIXL'))
 
     def test_invalid_MMIXX(self):
